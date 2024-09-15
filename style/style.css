@@ -6,4 +6,22 @@ body {
     min-height: 100svh;
     margin: 0;
     font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.books-grid {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-auto-rows: 1fr;
+    width: 50rem;
+    gap: 1rem;
+}
+
+.card {
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 6px;
+    padding-inline: 1rem;
 }
