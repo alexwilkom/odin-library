@@ -17,23 +17,44 @@ button {
     border: 0;
     cursor: pointer;
     padding: 0.8rem 1.6rem;
-    background-color: blueviolet;
+    background-color: rgb(43, 107, 226);
     color: aliceblue;
     font-weight: bold;
     border-radius: 6px;
 }
 
 button:hover {
-    background-color: rgb(117, 28, 201);
+    background-color: rgb(34, 91, 197);
+}
+
+dialog div {
+    text-align: center;
+}
+
+::backdrop {
+    backdrop-filter: blur(6px);
+}
+
+label {
+    width: 65px;
+    display: inline-block;
+}
+
+input {
+    padding: .2rem .4rem;
+}
+
+input[type="checkbox"] {
+    margin: 0;
 }
 
 .books-grid {
     padding: 1rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-    grid-auto-rows: 1fr;
-    width: 50rem;
     gap: 1rem;
+    width: 65vw;
+    margin-top: 1rem;
 }
 
 .card {

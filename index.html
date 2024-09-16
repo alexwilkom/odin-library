@@ -10,8 +10,33 @@
 </head>
 
 <body>
-    <button type="button">Add New Book</button>
+    <button class="new-book-btn" type="button">Add New Book</button>
+    <dialog id="dialog">
+        <form action="dialog">
+            <p>
+                <label for="title">Title</label>
+                <input type="text" id="title">
+            </p>
+            <p>
+                <label for="author">Author</label>
+                <input type="text" id="author">
+            </p>
+            <p>
+                <label for="pages">Pages</label>
+                <input type="number" id="pages" min=0>
+            </p>
+            <p>
+                <label for="read">Read</label>
+                <input type="checkbox" id="read">
+            </p>
+            <div>
+                <button value="cancel" formmethod="dialog">Cancel</button>
+                <button id="confirmBtn" formmethod="dialog">Confirm</button>
+            </div>
+        </form>
+    </dialog>
     <div class="books-grid"></div>
+
 </body>
 
 </html>
