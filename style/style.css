@@ -46,9 +46,7 @@ h2 {
 
 .flex-btn {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 1rem;
+    justify-content: space-between;
 }
 
 dialog div {
@@ -80,10 +78,10 @@ input[type="checkbox"] {
 
 .books-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     grid-auto-rows: 1fr;
     gap: 1rem;
-    width: 85vw;
+    width: 75vw;
     margin-top: 1rem;
 }
 

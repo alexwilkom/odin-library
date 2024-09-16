@@ -14,6 +14,8 @@ const myLibrary = [
     new Book("The Hobbit", "Tolkien", 295, false),
     new Book("Emma", "Jane Austen", 400, false),
     new Book("Swann's Way", "Marcel Proust", 500, false),
+    new Book("Meditations", "Marcus Aurelius", 500, true),
+    new Book("Meditations", "Marcus Aurelius", 500, true),
 ];
 
 function Book(title, author, pages, read) {
@@ -43,7 +45,7 @@ function createElement(tag, text) {
 
 function createCard(book, key) {
     const card = document.createElement("div");
-    const readStatusBtn = createElement("button", book.read ? "Read" : "Not read yet");
+    const readStatusBtn = createElement("button", book.read ? "Read" : "Not read");
     const removeBtn = createElement("button", "Remove");
     const btnContainer = document.createElement("div");
 
@@ -101,7 +103,7 @@ function toggleReadStatus(event) {
         const readBtn = document.querySelector(`[data-key="${key}"] .btn-read`);
 
         myLibrary[key].toggleReadStatus();
-        readBtn.innerText = book.read ? "Read" : "Not read yet";
+        readBtn.innerText = book.read ? "Read" : "Not read";
     }
 }
 
