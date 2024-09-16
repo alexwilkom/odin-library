@@ -1,3 +1,14 @@
+const newBookBtn = document.querySelector(".new-book-btn");
+const dialog = document.querySelector("dialog");
+const title = document.querySelector("#title");
+const author = document.querySelector("#author");
+const pages = document.querySelector("#pages");
+const isRead = document.querySelector("#read");
+const addBookBtn = document.querySelector("#add-book-btn");
+const cancelBtn = document.querySelector("#cancel-btn");
+const form = document.querySelector("form");
+const errorFormMsg = document.querySelector(".error-message-form");
+
 const myLibrary = [
     {
         title: "The Hobbit",
@@ -26,29 +37,18 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
-const newBookBtn = document.querySelector(".new-book-btn");
-const dialog = document.querySelector("dialog");
-const title = document.querySelector("#title");
-const author = document.querySelector("#author");
-const pages = document.querySelector("#pages");
-const isRead = document.querySelector("#read");
-const addBookBtn = document.querySelector("#add-book-btn");
-const cancelBtn = document.querySelector("#cancel-btn");
-const form = document.querySelector("form");
-const errorFormMsg = document.querySelector(".error-message-form");
-
 newBookBtn.addEventListener("click", () => {
-    title.value = "";
-    author.value = "";
-    pages.value = "";
-    errorFormMsg.innerText = "";
-    isRead.checked = false;
     dialog.showModal();
 })
 
 cancelBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    dialog.close()
+    dialog.close();
+    title.value = "";
+    author.value = "";
+    pages.value = "";
+    errorFormMsg.innerText = "";
+    isRead.checked = false;
 });
 
 addBookBtn.addEventListener("click", (event) => {
@@ -78,6 +78,13 @@ function addBookToLibrary(book) {
     card.appendChild(createElement("p", book.author));
     card.appendChild(createElement("p", `${book.pages} pages`));
     card.appendChild(createElement("p", book.read ? "Read" : "Not read yet"));
+
+    const removeBtn = createElement("button", "Remove")
+    removeBtn.setAttribute("type", "button");
+    removeBtn.classList.add("btn");
+    removeBtn.classList.add("btn-remove");
+
+    card.appendChild(removeBtn);
     grid.appendChild(card);
 }
 

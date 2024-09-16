@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
+    <link rel="stylesheet" href="./style/reset.css">
     <link rel="stylesheet" href="./style/style.css">
     <script defer src="script.js"></script>
 </head>
 
 <body>
-    <button class="new-book-btn" type="button">Add New Book</button>
+    <button class="btn btn-primary new-book-btn" type="button">Add New Book</button>
     <dialog id="dialog">
         <form method="" action="">
             <p>
@@ -31,8 +32,8 @@
             </p>
             <small class="error-message-form"></small>
             <div>
-                <button type="button" id="cancel-btn">Cancel</button>
-                <button type="submit" id="add-book-btn">Add Book</button>
+                <button class="btn btn-primary" type="button" id="cancel-btn">Cancel</button>
+                <button class="btn btn-primary" type="submit" id="add-book-btn">Add Book</button>
             </div>
         </form>
     </dialog>
