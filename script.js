@@ -8,6 +8,8 @@ const addBookBtn = document.querySelector("#add-book-btn");
 const cancelBtn = document.querySelector("#cancel-btn");
 const form = document.querySelector("form");
 const errorFormMsg = document.querySelector(".error-message-form");
+const grid = document.querySelector(".books-grid");
+
 
 const myLibrary = [
     {
@@ -37,43 +39,16 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
-newBookBtn.addEventListener("click", () => {
-    dialog.showModal();
-})
-
-cancelBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    dialog.close();
-    title.value = "";
-    author.value = "";
-    pages.value = "";
-    errorFormMsg.innerText = "";
-    isRead.checked = false;
-});
-
-addBookBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    if (form.checkValidity()) {
-        const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
-        myLibrary.push(newBook);
-        addBookToLibrary(newBook);
-        dialog.close();
-    } else {
-        errorFormMsg.innerText = "Please fill out all the required(*) details.";
-    }
-});
-
 function createElement(tag, text) {
     const element = document.createElement(tag);
     element.innerText = text;
     return element;
 };
 
-function addBookToLibrary(book) {
-    const grid = document.querySelector(".books-grid");
+function addBookToLibrary(book, key) {
     const card = document.createElement("div");
     card.classList.add("card");
+    card.setAttribute("data-key", key);
     card.appendChild(createElement("h2", book.title));
     card.appendChild(createElement("p", book.author));
     card.appendChild(createElement("p", `${book.pages} pages`));
@@ -89,9 +64,57 @@ function addBookToLibrary(book) {
 }
 
 function renderLibrary() {
-    myLibrary.forEach(book => {
-        addBookToLibrary(book);
+    myLibrary.forEach((book, index) => {
+        addBookToLibrary(book, index);
     })
 }
 
+function resetDialog() {
+    title.value = "";
+    author.value = "";
+    pages.value = "";
+    errorFormMsg.innerText = "";
+    isRead.checked = false;
+}
+
 renderLibrary();
+
+newBookBtn.addEventListener("click", () => {
+    resetDialog();
+    dialog.showModal();
+})
+
+cancelBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    dialog.close();
+    resetDialog();
+});
+
+addBookBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    if (form.checkValidity()) {
+        const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
+        myLibrary.push(newBook);
+        const bookIndex = myLibrary.length - 1;
+        addBookToLibrary(newBook, bookIndex);
+        dialog.close();
+    } else {
+        errorFormMsg.innerText = "Please fill out all the required(*) details.";
+    }
+});
+
+function handleRemoveBook(event) {
+    if (event.target.classList.contains("btn-remove")) {
+        const bookCard = event.target.closest(".card");
+        const key = bookCard.dataset.key;
+
+        myLibrary.splice(key, 1);
+        console.log(myLibrary);
+
+        grid.innerHTML = "";
+        renderLibrary();
+    }
+}
+
+grid.addEventListener("click", handleRemoveBook);
