@@ -43,9 +43,9 @@ function createElement(tag, text) {
 
 function createCard(book, key) {
     const card = document.createElement("div");
-    const removeBtn = createElement("button", "Remove");
     const readStatusBtn = createElement("button", book.read ? "Read" : "Not read yet");
-
+    const removeBtn = createElement("button", "Remove");
+    const btnContainer = document.createElement("div");
 
     card.classList.add("card");
     card.setAttribute("data-key", key);
@@ -56,12 +56,17 @@ function createCard(book, key) {
     readStatusBtn.setAttribute("type", "button");
     readStatusBtn.classList.add("btn");
     readStatusBtn.classList.add("btn-read");
-    card.appendChild(readStatusBtn);
 
     removeBtn.setAttribute("type", "button");
     removeBtn.classList.add("btn");
     removeBtn.classList.add("btn-remove");
-    card.appendChild(removeBtn);
+
+    btnContainer.appendChild(readStatusBtn);
+    btnContainer.appendChild(removeBtn);
+    btnContainer.classList.add("flex-btn");
+
+    card.appendChild(btnContainer);
+
     return card
 }
 
@@ -92,7 +97,7 @@ function toggleReadStatus(event) {
     if (event.target.classList.contains("btn-read")) {
         const bookCard = event.target.closest(".card");
         const key = bookCard.dataset.key;
-        const book = myLibrary[key]
+        const book = myLibrary[key];
         const readBtn = document.querySelector(`[data-key="${key}"] .btn-read`);
 
         myLibrary[key].toggleReadStatus();
