@@ -17,32 +17,7 @@ const myLibrary = [
         pages: 500,
         read: false
     },
-    {
-        title: "Swann's Way",
-        author: "Marcel Proust",
-        pages: 500,
-        read: false
-    },
-    {
-        title: "Swann's Way",
-        author: "Marcel Proust",
-        pages: 500,
-        read: false
-    },
-    {
-        title: "Swann's Way",
-        author: "Marcel Proust",
-        pages: 500,
-        read: false
-    },
 ];
-
-const newBookBtn = document.querySelector(".new-book-btn");
-const dialog = document.querySelector("dialog");
-
-newBookBtn.addEventListener("click", () => {
-    dialog.showModal();
-})
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -50,6 +25,36 @@ function Book(title, author, pages, read) {
     this.pages = pages;
     this.read = read;
 }
+
+const newBookBtn = document.querySelector(".new-book-btn");
+const dialog = document.querySelector("dialog");
+const title = document.querySelector("#title");
+const author = document.querySelector("#author");
+const pages = document.querySelector("#pages");
+const isRead = document.querySelector("#read");
+const addBookBtn = document.querySelector("#add-book-btn");
+const cancelBtn = document.querySelector("#cancel-btn");
+
+newBookBtn.addEventListener("click", () => {
+    title.value = "";
+    author.value = "";
+    pages.value = "";
+    isRead.checked = false;
+    dialog.showModal();
+})
+
+cancelBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    dialog.close()
+});
+
+addBookBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
+    myLibrary.push(newBook);
+    addBookToLibrary(newBook);
+    dialog.close();
+});
 
 function createElement(tag, text) {
     const element = document.createElement(tag);
@@ -68,6 +73,10 @@ function addBookToLibrary(book) {
     grid.appendChild(card);
 }
 
-myLibrary.forEach(book => {
-    addBookToLibrary(book);
-})
+function renderLibrary() {
+    myLibrary.forEach(book => {
+        addBookToLibrary(book);
+    })
+}
+
+renderLibrary();
