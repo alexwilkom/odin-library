@@ -34,11 +34,14 @@ const pages = document.querySelector("#pages");
 const isRead = document.querySelector("#read");
 const addBookBtn = document.querySelector("#add-book-btn");
 const cancelBtn = document.querySelector("#cancel-btn");
+const form = document.querySelector("form");
+const errorFormMsg = document.querySelector(".error-message-form");
 
 newBookBtn.addEventListener("click", () => {
     title.value = "";
     author.value = "";
     pages.value = "";
+    errorFormMsg.innerText = "";
     isRead.checked = false;
     dialog.showModal();
 })
@@ -50,10 +53,15 @@ cancelBtn.addEventListener("click", (event) => {
 
 addBookBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
-    myLibrary.push(newBook);
-    addBookToLibrary(newBook);
-    dialog.close();
+
+    if (form.checkValidity()) {
+        const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
+        myLibrary.push(newBook);
+        addBookToLibrary(newBook);
+        dialog.close();
+    } else {
+        errorFormMsg.innerText = "Please fill out all the required(*) details.";
+    }
 });
 
 function createElement(tag, text) {

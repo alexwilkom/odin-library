@@ -48,6 +48,10 @@ input[type="checkbox"] {
     margin: 0;
 }
 
+.error-message-form {
+    color: red;
+}
+
 .books-grid {
     padding: 1rem;
     display: grid;
