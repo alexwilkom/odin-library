@@ -11,24 +11,9 @@ const errorFormMsg = document.querySelector(".error-message-form");
 const grid = document.querySelector(".books-grid");
 
 const myLibrary = [
-    {
-        title: "The Hobbit",
-        author: "Tolkien",
-        pages: 295,
-        read: false
-    },
-    {
-        title: "Emma",
-        author: "Jane Austen",
-        pages: 400,
-        read: false
-    },
-    {
-        title: "Swann's Way",
-        author: "Marcel Proust",
-        pages: 500,
-        read: false
-    },
+    new Book("The Hobbit", "Tolkien", 295, false),
+    new Book("Emma", "Jane Austen", 400, false),
+    new Book("Swann's Way", "Marcel Proust", 500, false),
 ];
 
 function Book(title, author, pages, read) {
@@ -36,6 +21,10 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
+}
+
+Book.prototype.toggleReadStatus = function () {
+    this.read = !this.read;
 }
 
 function resetDialog() {
@@ -54,13 +43,21 @@ function createElement(tag, text) {
 
 function createCard(book, key) {
     const card = document.createElement("div");
-    const removeBtn = createElement("button", "Remove")
+    const removeBtn = createElement("button", "Remove");
+    const readStatusBtn = createElement("button", book.read ? "Read" : "Not read yet");
+
+
     card.classList.add("card");
     card.setAttribute("data-key", key);
     card.appendChild(createElement("h2", book.title));
     card.appendChild(createElement("p", book.author));
     card.appendChild(createElement("p", `${book.pages} pages`));
-    card.appendChild(createElement("p", book.read ? "Read" : "Not read yet"));
+
+    readStatusBtn.setAttribute("type", "button");
+    readStatusBtn.classList.add("btn");
+    readStatusBtn.classList.add("btn-read");
+    card.appendChild(readStatusBtn);
+
     removeBtn.setAttribute("type", "button");
     removeBtn.classList.add("btn");
     removeBtn.classList.add("btn-remove");
@@ -85,10 +82,21 @@ function removeBook(event) {
         const key = bookCard.dataset.key;
 
         myLibrary.splice(key, 1);
-        console.log(myLibrary);
 
         grid.innerHTML = "";
         renderLibrary();
+    }
+}
+
+function toggleReadStatus(event) {
+    if (event.target.classList.contains("btn-read")) {
+        const bookCard = event.target.closest(".card");
+        const key = bookCard.dataset.key;
+        const book = myLibrary[key]
+        const readBtn = document.querySelector(`[data-key="${key}"] .btn-read`);
+
+        myLibrary[key].toggleReadStatus();
+        readBtn.innerText = book.read ? "Read" : "Not read yet";
     }
 }
 
@@ -120,6 +128,9 @@ addBookBtn.addEventListener("click", (event) => {
     addBookToLibrary();
 });
 
-grid.addEventListener("click", removeBook);
+grid.addEventListener("click", (event) => {
+    removeBook(event);
+    toggleReadStatus(event);
+});
 
 renderLibrary();
