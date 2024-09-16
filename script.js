@@ -10,7 +10,6 @@ const form = document.querySelector("form");
 const errorFormMsg = document.querySelector(".error-message-form");
 const grid = document.querySelector(".books-grid");
 
-
 const myLibrary = [
     {
         title: "The Hobbit",
@@ -39,36 +38,6 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
-function createElement(tag, text) {
-    const element = document.createElement(tag);
-    element.innerText = text;
-    return element;
-};
-
-function addBookToLibrary(book, key) {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.setAttribute("data-key", key);
-    card.appendChild(createElement("h2", book.title));
-    card.appendChild(createElement("p", book.author));
-    card.appendChild(createElement("p", `${book.pages} pages`));
-    card.appendChild(createElement("p", book.read ? "Read" : "Not read yet"));
-
-    const removeBtn = createElement("button", "Remove")
-    removeBtn.setAttribute("type", "button");
-    removeBtn.classList.add("btn");
-    removeBtn.classList.add("btn-remove");
-
-    card.appendChild(removeBtn);
-    grid.appendChild(card);
-}
-
-function renderLibrary() {
-    myLibrary.forEach((book, index) => {
-        addBookToLibrary(book, index);
-    })
-}
-
 function resetDialog() {
     title.value = "";
     author.value = "";
@@ -77,7 +46,63 @@ function resetDialog() {
     isRead.checked = false;
 }
 
-renderLibrary();
+function createElement(tag, text) {
+    const element = document.createElement(tag);
+    element.innerText = text;
+    return element;
+}
+
+function createCard(book, key) {
+    const card = document.createElement("div");
+    const removeBtn = createElement("button", "Remove")
+    card.classList.add("card");
+    card.setAttribute("data-key", key);
+    card.appendChild(createElement("h2", book.title));
+    card.appendChild(createElement("p", book.author));
+    card.appendChild(createElement("p", `${book.pages} pages`));
+    card.appendChild(createElement("p", book.read ? "Read" : "Not read yet"));
+    removeBtn.setAttribute("type", "button");
+    removeBtn.classList.add("btn");
+    removeBtn.classList.add("btn-remove");
+    card.appendChild(removeBtn);
+    return card
+}
+
+function addBookToGrid(book, key) {
+    const card = createCard(book, key);
+    grid.appendChild(card);
+}
+
+function renderLibrary() {
+    myLibrary.forEach((book, index) => {
+        addBookToGrid(book, index);
+    })
+}
+
+function removeBook(event) {
+    if (event.target.classList.contains("btn-remove")) {
+        const bookCard = event.target.closest(".card");
+        const key = bookCard.dataset.key;
+
+        myLibrary.splice(key, 1);
+        console.log(myLibrary);
+
+        grid.innerHTML = "";
+        renderLibrary();
+    }
+}
+
+function addBookToLibrary() {
+    if (form.checkValidity()) {
+        const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
+        myLibrary.push(newBook);
+        const bookIndex = myLibrary.length - 1;
+        addBookToGrid(newBook, bookIndex);
+        dialog.close();
+    } else {
+        errorFormMsg.innerText = "Please fill out all the required(*) details.";
+    }
+}
 
 newBookBtn.addEventListener("click", () => {
     resetDialog();
@@ -92,29 +117,9 @@ cancelBtn.addEventListener("click", (event) => {
 
 addBookBtn.addEventListener("click", (event) => {
     event.preventDefault();
-
-    if (form.checkValidity()) {
-        const newBook = new Book(title.value, author.value, pages.value, isRead.checked);
-        myLibrary.push(newBook);
-        const bookIndex = myLibrary.length - 1;
-        addBookToLibrary(newBook, bookIndex);
-        dialog.close();
-    } else {
-        errorFormMsg.innerText = "Please fill out all the required(*) details.";
-    }
+    addBookToLibrary();
 });
 
-function handleRemoveBook(event) {
-    if (event.target.classList.contains("btn-remove")) {
-        const bookCard = event.target.closest(".card");
-        const key = bookCard.dataset.key;
+grid.addEventListener("click", removeBook);
 
-        myLibrary.splice(key, 1);
-        console.log(myLibrary);
-
-        grid.innerHTML = "";
-        renderLibrary();
-    }
-}
-
-grid.addEventListener("click", handleRemoveBook);
+renderLibrary();
